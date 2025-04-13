@@ -6,8 +6,25 @@ let loreData = {};
 let traitDatabase = {}; // Added for traits
 
 // --- Temporary In-Memory Data Management ---
-let playerCollection = {}; // Stores cardId: count
-let savedDecks = []; // Stores { name: string, cards: string[] }
+// Load from localStorage if available
+let playerCollection = {};
+let savedDecks = [];
+
+function loadFromLocalStorage() {
+    const pc = localStorage.getItem('playerCollection');
+    const sd = localStorage.getItem('savedDecks');
+    if (pc) {
+        try { playerCollection = JSON.parse(pc); } catch (e) { playerCollection = {}; }
+    }
+    if (sd) {
+        try { savedDecks = JSON.parse(sd); } catch (e) { savedDecks = []; }
+    }
+}
+function saveToLocalStorage() {
+    localStorage.setItem('playerCollection', JSON.stringify(playerCollection));
+    localStorage.setItem('savedDecks', JSON.stringify(savedDecks));
+}
+loadFromLocalStorage();
 
 // --- Data Loading Promise ---
 // Use a promise to ensure data is loaded before other scripts try to use it
@@ -41,7 +58,7 @@ const dataLoadedPromise = new Promise((resolve, reject) => {
         reject(error); // Reject the promise on error
     });
 });
-
+`x`
 
 // --- Temporary Storage Functions ---
 function initializeTemporaryCollection() {
@@ -83,7 +100,7 @@ function addCardToTemporaryCollection(cardId, quantity = 1) {
     }
     playerCollection[cardId] = (playerCollection[cardId] || 0) + quantity;
     console.log(`Added ${quantity}x ${cardId} to collection. New count: ${playerCollection[cardId]}`);
-    // In a real app, update UI or save to persistent storage here
+    saveToLocalStorage();
 }
 
 function removeCardFromTemporaryCollection(cardId, quantity = 1) {
@@ -96,7 +113,7 @@ function removeCardFromTemporaryCollection(cardId, quantity = 1) {
         delete playerCollection[cardId]; // Remove entry if count is zero or less
     }
     console.log(`Removed ${quantity}x ${cardId} from collection. Remaining: ${playerCollection[cardId] || 0}`);
-    // In a real app, update UI or save to persistent storage here
+    saveToLocalStorage();
     return true; // Indicate success
 }
 
@@ -123,7 +140,7 @@ function saveTemporaryDeck(name, cardIds) {
         savedDecks.push({ name: name, cards: [...stringCardIds] });
         console.log(`Saved new temporary deck: ${name}`);
     }
-    // In a real app, save to persistent storage here
+    saveToLocalStorage();
     return true;
 }
 
@@ -132,7 +149,7 @@ function deleteTemporaryDeck(name) {
     savedDecks = savedDecks.filter(deck => deck.name !== name);
     if (savedDecks.length < initialLength) {
         console.log(`Deleted temporary deck: ${name}`);
-        // In a real app, save changes to persistent storage here
+        saveToLocalStorage();
         return true;
     }
     console.log(`Temporary deck not found for deletion: ${name}`);
@@ -155,16 +172,18 @@ function renderCollectionCard(cardData, count = null) {
      const factionColor = factionInfo ? factionInfo.color : '#ccc';
 
     // Ribbon bar
-    content += `<div class="card-ribbon" style="background-color: ${factionColor};">
-        <span class="ribbon-faction" title="${factionInfo ? factionInfo.description : ''}">${cardData.faction}</span> &ndash;
-        <span class="ribbon-country" title="${countryInfo ? countryInfo.description : ''}">${countryInfo ? countryInfo.name : cardData.country}</span>
-    </div>`;
-    content += `<strong>${cardData.name}</strong>`;
-    content += `<div class="cost">Cost: ${cardData.cost}</div>`;
-    if (cardData.type === 'Unit') {
-        content += `<div class="stats"><span class="atk">ATK: ${cardData.atk}</span> | <span class="hp">HP: ${cardData.maxHp}</span></div>`;
+    if (cardData.type === 'Order') {
+        content += `<div class="card-ribbon" style="background-color: #205020; color: #fff; text-align: center;">ПРИКАЗ</div>`;
+        content += `<strong>${cardData.name}</strong>`;
+        content += `<div class="cost">Cost: ${cardData.cost}</div>`;
     } else {
-        content += `<div>${cardData.type}</div>`;
+        content += `<div class="card-ribbon" style="background-color: ${factionColor};">
+            <span class="ribbon-faction" title="${factionInfo ? factionInfo.description : ''}">${cardData.faction}</span> &ndash;
+            <span class="ribbon-country" title="${countryInfo ? countryInfo.description : ''}">${countryInfo ? countryInfo.name : cardData.country}</span>
+        </div>`;
+        content += `<strong>${cardData.name}</strong>`;
+        content += `<div class="cost">Cost: ${cardData.cost}</div>`;
+        content += `<div class="stats"><span class="atk">ATK: ${cardData.atk}</span> | <span class="hp">HP: ${cardData.maxHp}</span></div>`;
     }
     if (cardData.traits && cardData.traits.length > 0) {
         // Map trait IDs to names and add tooltips from traitDatabase
@@ -231,6 +250,55 @@ function generateEffectText(effectType, value, target) {
         default:
             return `Unknown effect (${effectType}).`;
     }
+}
+
+/**
+ * Global log function for game events.
+ * Appends to gameLog (if available) and prints to console.
+ */
+function log(message) {
+    if (typeof gameLog !== "undefined" && Array.isArray(gameLog)) {
+        gameLog.push(message);
+    }
+    console.log("[LOG]", message);
+}
+
+/**
+ * Fisher-Yates shuffle for arrays (in place).
+ * Usage: shuffle(array)
+ */
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+/**
+ * Creates a new card instance with a unique instanceId.
+ * @param {string} cardId
+ * @returns {object} card instance
+ */
+function createCardInstance(cardId) {
+    if (!cardDatabase[cardId]) {
+        throw new Error("Card ID not found: " + cardId);
+    }
+    // Use global uniqueCardIdCounter if available, else fallback to timestamp
+    let instanceId;
+    if (typeof uniqueCardIdCounter !== "undefined") {
+        instanceId = ++uniqueCardIdCounter;
+    } else {
+        instanceId = Date.now() + Math.floor(Math.random() * 10000);
+    }
+    // Deep clone the card data
+    const card = JSON.parse(JSON.stringify(cardDatabase[cardId]));
+    card.instanceId = instanceId;
+    // For units, set current hp to maxHp if not already set
+    if (card.type === "Unit" && card.maxHp !== undefined && card.hp === undefined) {
+        card.hp = card.maxHp;
+    }
+    return card;
 }
 
 console.log("shared.js loaded");

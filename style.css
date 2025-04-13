@@ -90,6 +90,12 @@ body {
     /* z-index: 1; Removed */
 }
 
+.card-ribbon.order {
+    background-color: #205020 !important;
+    color: #fff !important;
+    text-align: center;
+}
+
 /* .ribbon-interdef { Removed - color applied inline } */
 /* .ribbon-accord { Removed - color applied inline } */
 

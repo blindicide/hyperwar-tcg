@@ -42,9 +42,9 @@ function renderCard(card, location, owner) {
              content += `<div>(Can Attack)</div>`;
         }
     } else if (card.type === 'Order') {
+         content += `<div class="card-ribbon" style="background-color: #205020; color: #fff; text-align: center;">ПРИКАЗ</div>`;
          content += `<strong>${card.name}</strong>`;
          content += `<div class="cost">Cost: ${card.cost}</div>`;
-         content += `<div>Order</div>`;
          // Display traits for Orders too, using traitDatabase
          if (card.traits && card.traits.length > 0) {
              const traitSpans = card.traits.map(traitId => {

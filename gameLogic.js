@@ -399,7 +399,7 @@ function runAI() {
 
     // Attack with all available units
     ai.battlefield.forEach(unit => {
-        if (unit.canAttack) {
+        if (unit.canAttack && unit.atk > 0) {
             // --- AI Guard Targeting ---
             const opponentGuardUnits = opponent.battlefield.filter(u => u.traits && u.traits.includes('guard'));
             let target = null;

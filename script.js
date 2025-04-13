@@ -1,7 +1,4 @@
 // --- Card Definitions & Lore (Loaded from JSON) ---
-let cardDatabase = {};
-let loreData = {};
-
 // --- Effect Maps ---
 // For Orders and specific activated abilities (if any)
 let cardEffectMap = {
@@ -152,7 +149,7 @@ dataLoadedPromise.then(() => {
 
     // Setup Event Listeners that depend on the DOM being ready
     // Make sure this runs after the DOM is parsed, or use DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
+    function setupGameMenu() {
         console.log("DOM loaded, setting up listeners.");
 
         // --- Pre-Game Setup Listeners ---
@@ -162,8 +159,11 @@ dataLoadedPromise.then(() => {
         const setupErrorEl = document.getElementById('setup-error');
 
         // Populate deck dropdowns
+        console.log("About to populate p1DeckSelect:", p1DeckSelect);
+        console.log("About to populate p2DeckSelect:", p2DeckSelect);
         populateDeckSelect(p1DeckSelect);
         populateDeckSelect(p2DeckSelect); // Populate for both players
+        console.log("Finished populating deck selects.");
 
         if (startGameButton && p1DeckSelect && p2DeckSelect && setupErrorEl) {
             startGameButton.addEventListener('click', () => {
@@ -234,7 +234,13 @@ dataLoadedPromise.then(() => {
 
         // NOTE: startGame() is no longer called automatically here.
         // It's called by the 'start-game-button' listener.
-    });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener('DOMContentLoaded', setupGameMenu);
+    } else {
+        setupGameMenu();
+    }
 
 }).catch(error => {
     console.error("Failed to initialize game due to data loading error:", error);
@@ -247,17 +253,19 @@ function populateDeckSelect(selectElement) {
     if (!selectElement) return;
     selectElement.innerHTML = '<option value="">-- Select Deck --</option>'; // Clear and add default
     const decks = getTemporarySavedDecks(); // From shared.js
-     const MIN_DECK_SIZE_GAME = 20; // Duplicating for now
-     const MAX_DECK_SIZE_GAME = 40;
+    console.log("populateDeckSelect: decks loaded:", decks);
+    const MIN_DECK_SIZE_GAME = 20; // Duplicating for now
+    const MAX_DECK_SIZE_GAME = 40;
     decks.forEach(deck => {
         // Basic validation check before adding
         if (deck.cards.length >= MIN_DECK_SIZE_GAME && deck.cards.length <= MAX_DECK_SIZE_GAME) {
+            console.log(`Adding deck to select: ${deck.name} (${deck.cards.length} cards)`);
             const option = document.createElement('option');
             option.value = deck.name;
             option.textContent = `${deck.name} (${deck.cards.length} cards)`;
             selectElement.appendChild(option);
         } else {
-             console.warn(`Deck "${deck.name}" excluded from selection (invalid size: ${deck.cards.length})`);
+            console.warn(`Deck "${deck.name}" excluded from selection (invalid size: ${deck.cards.length})`);
         }
     });
 }

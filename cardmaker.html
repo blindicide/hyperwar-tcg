@@ -1,0 +1,83 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Maker</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .cardmaker-form { max-width: 500px; margin: 2em auto; background: #f8f8f8; padding: 1em 2em; border-radius: 8px; }
+        .cardmaker-form label { display: block; margin-top: 1em; }
+        .cardmaker-form input, .cardmaker-form select, .cardmaker-form textarea { width: 100%; }
+        .traits-list, .countries-list { display: flex; flex-wrap: wrap; gap: 0.5em; }
+        .traits-list label, .countries-list label { display: flex; align-items: center; gap: 0.2em; }
+        .output-area { margin-top: 2em; background: #e0ffe0; padding: 1em; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <h1>Create a New Card</h1>
+    <form class="cardmaker-form" id="cardForm">
+        <label>
+            Name:
+            <input type="text" id="cardName" required>
+        </label>
+        <label>
+            Type:
+            <select id="cardType" required>
+                <option value="Unit">Unit</option>
+                <option value="Order">Order</option>
+            </select>
+        </label>
+        <label>
+            Cost:
+            <input type="number" id="cardCost" min="0" value="1" required>
+        </label>
+        <div id="unitFields">
+            <label>
+                ATK:
+                <input type="number" id="cardAtk" min="0" value="1">
+            </label>
+            <label>
+                HP:
+                <input type="number" id="cardHp" min="1" value="1">
+            </label>
+            <label>
+                Max HP:
+                <input type="number" id="cardMaxHp" min="1" value="1">
+            </label>
+        </div>
+        <label>
+            Description:
+            <textarea id="cardDescription" rows="2"></textarea>
+        </label>
+        <label>
+            Faction:
+            <select id="cardFaction" required></select>
+        </label>
+        <label>
+            Country:
+            <select id="cardCountry" required></select>
+        </label>
+        <label>
+            Traits:
+            <div class="traits-list" id="traitsList"></div>
+        </label>
+        <label>
+            Rarity:
+            <select id="cardRarity" required>
+                <option value="Common">Common</option>
+                <option value="Rare">Rare</option>
+                <option value="Elite">Elite</option>
+                <option value="Super Rare">Super Rare</option>
+                <option value="Ultra Rare">Ultra Rare</option>
+            </select>
+        </label>
+        <button type="submit">Generate Card JSON</button>
+    </form>
+    <div class="output-area" id="outputArea" style="display:none;">
+        <h3>Card JSON</h3>
+        <pre id="cardJson"></pre>
+        <button id="copyJson">Copy to Clipboard</button>
+    </div>
+    <script src="cardmaker.js"></script>
+</body>
+</html>
