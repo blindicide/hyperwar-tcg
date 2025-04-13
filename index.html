@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple TCG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Simple Military TCG</h1>
+    <p><a href="deckbuilder.html">Go to Deck Builder</a></p>
+
+    <!-- Pre-Game Setup Area (Initially Visible) -->
+    <div id="pre-game-setup">
+        <h2>Game Setup</h2>
+        <div>
+            <label for="player1-deck-select">Player 1 Deck:</label>
+            <select id="player1-deck-select">
+                <option value="">-- Select Deck --</option>
+                <!-- Populated by JS -->
+            </select>
+        </div>
+        <div>
+            <label for="player2-deck-select">Player 2 Deck:</label>
+            <select id="player2-deck-select">
+                 <option value="">-- Select Deck --</option>
+                 <!-- Populated by JS -->
+            </select>
+            <span>(Player 2 / AI)</span>
+        </div>
+        <button id="start-game-button">Start Game with Selected Decks</button>
+        <p id="setup-error" style="color: red;"></p>
+    </div>
+
+    <!-- Main Game Area (Initially Hidden) -->
+    <div id="main-game-area" style="display: none;">
+        <div class="game-info">
+        <div id="player1-info">
+            Player 1 HP: <span id="p1-hp">30</span> | Supply: <span id="p1-kredits">0</span>/ <span id="p1-max-kredits">0</span>
+            | Deck: <span id="p1-deck">0</span>
+        </div>
+        <div id="turn-info">
+            Turn: <span id="turn-number">1</span> (<span id="current-player">Player 1</span>)
+            <button id="end-turn-button">End Turn</button>
+        </div>
+         <div id="player2-info">
+            Player 2 HP: <span id="p2-hp">30</span> | Supply: <span id="p2-kredits">0</span>/ <span id="p2-max-kredits">0</span>
+             | Deck: <span id="p2-deck">0</span>
+        </div>
+    </div>
+
+    <div class="game-area">
+        <!-- Player 2 (Opponent) Area -->
+        <div class="player-area" id="player2-area">
+            <div class="hand" id="p2-hand">Opponent Hand</div>
+            <div class="battlefield" id="p2-battlefield">Opponent Battlefield</div>
+        </div>
+
+        <hr>
+
+        <!-- Player 1 (You) Area -->
+        <div class="player-area" id="player1-area">
+            <div class="battlefield" id="p1-battlefield">Your Battlefield</div>
+            <div class="hand" id="p1-hand">Your Hand</div>
+        </div>
+    </div>
+
+    <div id="game-log">
+        <h2>Game Log</h2>
+        <ul id="log-list"></ul>
+    </div>
+
+    <hr>
+
+    <div class="pack-opening-area">
+        <h2>Card Packs</h2>
+        <button id="open-pack-button">Open New Pack (5 Cards)</button>
+        <div id="pack-results">
+            <!-- Opened cards will be displayed here -->
+        </div>
+    </div> <!-- End of main-game-area -->
+
+    <script src="shared.js"></script> <!-- Load shared data first -->
+    <script src="ui.js"></script>     <!-- Load UI functions -->
+    <script src="gameLogic.js"></script> <!-- Load core game logic -->
+    <script src="packs.js"></script>   <!-- Load pack opening logic -->
+    <script src="script.js"></script> <!-- Load initialization and event listeners -->
+</body>
+</html>

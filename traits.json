@@ -1,0 +1,58 @@
+{
+  "testing": {
+    "name": "Testing",
+    "description": "A trait used for internal testing purposes."
+  },
+  "guard": {
+    "name": "На страже",
+    "description": "Вражеские юниты должны атаковать юнит с чертой 'На страже' в первую очередь."
+  },
+  "quick_deployment": {
+    "name": "Быстрое развёртывание",
+    "description": "Этот юнит может атаковать противника в тот же ход!"
+  },
+  "armor-1": {
+    "name": "Лёгкая броня",
+    "description": "Урон, получаемый юнитом, уменьшается на 1."
+  },
+   "armor-2": {
+    "name": "Тяжёлая броня",
+    "description": "Урон, получаемый юнитом, уменьшается на 2."
+  },
+  "piercing": {
+    "name": "Бронебойный",
+    "description": "Этот юнит игнорирует черты брони (лёгкая или тяжёлая)."
+  },
+  "first-strike": {
+    "name": "Блиц",
+    "description": "Если юнит уничтожает противника одной атакой, то не получает урона."
+  },
+  "deadly": {
+    "name": "Deadly",
+    "description": "Any unit dealt combat damage by this unit is instantly destroyed."
+  },
+  "deploy": {
+    "name": "Deploy",
+    "description": "Triggers an effect when the unit enters the battlefield."
+  },
+  "destroyed": {
+    "name": "Destroyed",
+    "description": "Triggers an effect when the unit is destroyed."
+  },
+  "suppression": {
+    "name": "Suppression",
+    "description": "Enemy units damaged by this unit cannot attack during their next turn."
+  },
+  "infantry": {
+    "name": "Infantry",
+    "description": "A standard ground soldier unit."
+  },
+  "vehicle": {
+    "name": "Vehicle",
+    "description": "An armored or transport ground vehicle."
+  },
+  "aircraft": {
+    "name": "Aircraft",
+    "description": "A flying unit, potentially ignoring Guard or requiring specific counters."
+  }
+}

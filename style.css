@@ -1,0 +1,137 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#turn-info {
+    text-align: center;
+}
+
+.game-area {
+    width: 80%;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.player-area {
+    margin: 10px 0;
+    min-height: 150px; /* Ensure space even when empty */
+}
+
+.hand, .battlefield {
+    border: 1px dashed #aaa;
+    padding: 10px;
+    margin-top: 10px;
+    min-height: 100px; /* Ensure space for cards */
+    display: flex; /* Arrange cards horizontally */
+    flex-wrap: wrap; /* Allow cards to wrap */
+    gap: 10px; /* Space between cards */
+    align-items: flex-start; /* Align cards to the top */
+}
+
+.hand { background-color: #e0f0ff; } /* Light blue for hand */
+.battlefield { background-color: #e0ffe0; } /* Light green for battlefield */
+
+#p2-hand { background-color: #f0e0e0; } /* Light red for opponent hand (just visual) */
+
+.card {
+    border: 1px solid black;
+    padding: 5px; /* Reset padding */
+    min-width: 100px; /* Increased width */
+    min-height: 120px; /* Added min-height */
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    /* position: relative; no longer needed */
+    /* overflow: hidden; no longer needed */
+}
+
+.card:hover {
+    border-color: blue;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+}
+
+.card.unit .cost { color: blue; font-weight: bold; }
+.card.unit .stats { margin-top: 5px; font-size: 0.9em; }
+.card.unit .atk { color: red; }
+.card.unit .hp { color: green; }
+
+.card.playable { border-color: limegreen; }
+.card.selected { border: 2px solid gold; }
+.card.targetable { outline: 2px solid red; }
+
+/* Card Ribbon Styles */
+.card-ribbon {
+    /* position: absolute; Removed */
+    /* top: -2px; Removed */
+    /* left: -10px; Removed */
+    width: 100%; /* Take full card width */
+    padding: 2px 0;
+    margin-bottom: 3px; /* Space below ribbon */
+    font-size: 0.7em;
+    font-weight: bold;
+    text-align: center;
+    /* transform: rotate(-5deg); Removed */
+    /* box-shadow: 0 1px 2px rgba(0,0,0,0.3); Removed */
+    /* z-index: 1; Removed */
+}
+
+/* .ribbon-interdef { Removed - color applied inline } */
+/* .ribbon-accord { Removed - color applied inline } */
+
+.card-ribbon span { /* Apply to both faction and country spans */
+    color: white;
+    text-shadow:
+        -1px -1px 0 #000,
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000; /* Black outline */
+    cursor: help; /* Hint for tooltip */
+}
+
+/* Card Trait Styles */
+.card-traits {
+    font-size: 0.8em;
+    margin-top: 4px;
+    color: #555;
+}
+
+.trait {
+    font-style: italic;
+    /* Add more specific styles later if needed (e.g., background, border-radius) */
+}
+
+
+#game-log {
+    margin-top: 20px;
+    width: 80%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+#log-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#log-list li {
+    padding: 2px 0;
+    border-bottom: 1px dotted #eee;
+    font-size: 0.9em;
+}

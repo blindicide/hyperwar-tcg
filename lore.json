@@ -1,0 +1,32 @@
+{
+  "factions": {
+    "INTERDEF": {
+      "name": "INTERDEF",
+      "color": "#075f8f",
+      "description": "INTERDEF, INTeruniversal TERrestrial DEFense Organization (Межвселенская организация по обороне Земли) - лучшая и последняя надежда человечества."
+    },
+    "ACCORD": {
+      "name": "ACCORD",
+      "color": "#ff7f50",
+      "description": "ACCORD: Placeholder description for the Accord."
+    }
+  },
+  "countries": {
+    "USA": {
+      "name": "США",
+      "description": "USA: Боже, благослови Америку - Борис Ельцин"
+    },
+    "Equestria": {
+      "name": "Эквестрия",
+      "description": "Дружба - это магия!"
+    },
+    "PD": {
+      "name": "ПД",
+      "description": "Мы - будущее."
+    },
+    "GRFU": {
+      "name": "ГРСС",
+      "description": "Грифонская республика свободных советов. Авангард рабочей демократии."
+    }
+  }
+}

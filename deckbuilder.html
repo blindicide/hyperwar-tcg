@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deck Builder - Simple TCG</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to main stylesheet -->
+    <style>
+        /* Basic layout for deck builder */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .deck-builder-container {
+            display: flex;
+            justify-content: space-around;
+            width: 95%;
+            max-width: 1400px; /* Limit width */
+            gap: 20px; /* Space between columns */
+        }
+        .collection-column, .deck-column {
+            width: 45%;
+            border: 1px solid #ccc;
+            padding: 15px;
+            height: 80vh; /* Limit height */
+            display: flex;
+            flex-direction: column;
+        }
+        .card-list {
+            flex-grow: 1; /* Allow list to fill space */
+            overflow-y: auto; /* Enable scrolling */
+            border: 1px solid #eee;
+            padding: 5px;
+            margin-top: 10px;
+            display: flex; /* Use flexbox for card layout */
+            flex-wrap: wrap; /* Allow cards to wrap */
+            gap: 5px; /* Space between cards */
+            align-content: flex-start; /* Align wrapped items to the top */
+        }
+        .deck-controls, .deck-stats {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .deck-controls select, .deck-controls input, .deck-controls button {
+            margin: 5px;
+        }
+        /* Ensure cards have a defined size in the builder */
+        .card-list .card {
+            width: 120px; /* Smaller cards for builder */
+            min-height: 150px; /* Adjust height */
+            font-size: 0.8em; /* Smaller font */
+            cursor: pointer;
+            border: 1px solid #aaa;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s ease-in-out;
+        }
+         .card-list .card:hover {
+            transform: scale(1.05);
+            border-color: #007bff;
+         }
+        .card-list .card .cost, .card-list .card .stats, .card-list .card .rarity {
+            font-size: 0.9em;
+        }
+        .card-list .card .card-ribbon {
+            font-size: 0.8em;
+            padding: 2px;
+        }
+        .card-list .card strong {
+             font-size: 1.1em;
+        }
+        .card-count-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .card-in-deck {
+             opacity: 0.6; /* Dim cards added to deck */
+             border: 2px dashed #555;
+        }
+        .card-in-deck.max-copies {
+             opacity: 0.3; /* Further dim if max copies reached */
+             cursor: not-allowed;
+             border: 2px solid red;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Deck Builder</h1>
+    <p><a href="index.html">Back to Game</a></p>
+
+    <div class="deck-builder-container">
+        <!-- Collection Column -->
+        <div class="collection-column">
+            <h2>Your Collection</h2>
+            <div class="collection-filters">
+                <!-- Add filter controls here later (e.g., by faction, type, cost) -->
+                <label for="sort-collection">Sort by:</label>
+                <select id="sort-collection">
+                    <option value="name">Name</option>
+                    <option value="cost">Cost</option>
+                    <option value="rarity">Rarity</option>
+                    <option value="faction">Faction</option>
+                </select>
+            </div>
+            <div id="collection-list" class="card-list">
+                <!-- Player's owned cards will be displayed here -->
+                Loading collection...
+            </div>
+        </div>
+
+        <!-- Deck Column -->
+        <div class="deck-column">
+            <h2>Current Deck (<span id="deck-card-count">0</span>/<span id="deck-max-count">40</span>)</h2>
+             <div class="deck-controls">
+                <label for="deck-name">Deck Name:</label>
+                <input type="text" id="deck-name" placeholder="Enter deck name">
+                <button id="save-deck-button">Save Deck</button>
+                <br>
+                <label for="saved-decks-list">Load Deck:</label>
+                <select id="saved-decks-list">
+                    <option value="">-- Select a Deck --</option>
+                    <!-- Saved deck names will be populated here -->
+                </select>
+                <button id="load-deck-button">Load Selected</button>
+                <button id="delete-deck-button">Delete Selected</button>
+                <button id="new-deck-button">New Deck</button>
+            </div>
+            <div id="current-deck-list" class="card-list">
+                <!-- Cards added to the current deck will be displayed here -->
+            </div>
+            <div class="deck-stats">
+                <h3>Deck Statistics</h3>
+                <p id="deck-stats-details">
+                    <!-- Stats like card type counts, cost curve etc. can go here -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link shared data first, then the Deck Builder JavaScript -->
+    <script src="shared.js"></script>
+    <script src="deckbuilder.js"></script>
+</body>
+</html>
