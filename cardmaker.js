@@ -1,5 +1,7 @@
+// --- Логика генератора карт --- // Cardmaker logic
+
 document.addEventListener("DOMContentLoaded", () => {
-    // Elements
+    // Элементы // Elements
     const cardType = document.getElementById("cardType");
     const unitFields = document.getElementById("unitFields");
     const traitsList = document.getElementById("traitsList");
@@ -13,14 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let traitsData = {};
     let loreData = {};
 
-    // Show/hide unit fields
+    // Показать/скрыть поля юнита // Show/hide unit fields
     function updateUnitFields() {
         unitFields.style.display = cardType.value === "Unit" ? "" : "none";
     }
     cardType.addEventListener("change", updateUnitFields);
     updateUnitFields();
 
-    // Load traits.json and lore.json
+    // Загрузить traits.json и lore.json // Load traits.json and lore.json
     Promise.all([
         fetch("traits.json").then(r => r.json()),
         fetch("lore.json").then(r => r.json())
@@ -32,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         populateCountries();
     });
 
+    // Отрисовать список черт // Render traits list
     function populateTraits() {
         traitsList.innerHTML = "";
         Object.entries(traitsData).forEach(([id, trait]) => {
@@ -45,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Отрисовать список фракций // Render factions list
     function populateFactions() {
         factionSelect.innerHTML = "";
         Object.entries(loreData.factions).forEach(([id, faction]) => {
@@ -55,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Отрисовать список стран // Render countries list
     function populateCountries() {
         countrySelect.innerHTML = "";
         Object.entries(loreData.countries).forEach(([id, country]) => {
@@ -65,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Обработка отправки формы // Handle form submit
     cardForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const type = cardType.value;
@@ -87,9 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
         outputArea.style.display = "";
     });
 
+    // Кнопка копирования // Copy button
     copyJson.addEventListener("click", () => {
         navigator.clipboard.writeText(cardJson.textContent);
-        copyJson.textContent = "Copied!";
-        setTimeout(() => (copyJson.textContent = "Copy to Clipboard"), 1200);
+        copyJson.textContent = "Скопировано!"; // Copied!
+        setTimeout(() => (copyJson.textContent = "Скопировать в буфер"), 1200); // Copy to Clipboard
     });
 });

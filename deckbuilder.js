@@ -1,24 +1,24 @@
-// --- Deck Builder Logic ---
+ // --- Логика конструктора колод --- // --- Deck Builder Logic ---
 
-// --- Constants ---
+// --- Константы --- // --- Constants ---
 const MIN_DECK_SIZE = 20;
 const MAX_DECK_SIZE = 40;
 const MAX_CARD_COPIES = 2;
 
-// --- State ---
-let currentDeckIds = []; // Array of card IDs in the deck being built
+// --- Состояние --- // --- State ---
+let currentDeckIds = []; // Массив ID карт в создаваемой колоде // Array of card IDs in the deck being built
 let currentDeckName = "";
 
-// --- DOM Elements ---
+// --- DOM-элементы --- // --- DOM Elements ---
 let collectionListEl, currentDeckListEl, deckCardCountEl, deckMaxCountEl;
 let deckNameInput, saveDeckButton, savedDecksListEl, loadDeckButton, deleteDeckButton, newDeckButton;
 let sortCollectionSelect, deckStatsDetailsEl;
 
-// --- Initialization ---
-// Wait for shared data and DOM content
+// --- Инициализация --- // --- Initialization ---
+// Ждать загрузки общих данных и DOM // Wait for shared data and DOM content
 Promise.all([dataLoadedPromise, new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve))])
     .then(() => {
-        console.log("Data and DOM ready, initializing Deck Builder.");
+        console.log("Данные и DOM готовы, инициализация конструктора колод."); // Data and DOM ready, initializing Deck Builder.
         // Get DOM elements after DOM is ready
         collectionListEl = document.getElementById('collection-list');
         currentDeckListEl = document.getElementById('current-deck-list');
@@ -34,27 +34,27 @@ Promise.all([dataLoadedPromise, new Promise(resolve => document.addEventListener
         deckStatsDetailsEl = document.getElementById('deck-stats-details');
 
         if (!collectionListEl || !currentDeckListEl /* add checks for others */) {
-             console.error("Deck builder DOM elements not found!");
+             console.error("DOM-элементы конструктора колод не найдены!"); // Deck builder DOM elements not found!
              return;
         }
 
         deckMaxCountEl.textContent = MAX_DECK_SIZE; // Set max count display
 
-        // Add Event Listeners
+        // Добавить обработчики событий // Add Event Listeners
         saveDeckButton.addEventListener('click', handleSaveDeck);
         loadDeckButton.addEventListener('click', handleLoadDeck);
         deleteDeckButton.addEventListener('click', handleDeleteDeck);
         newDeckButton.addEventListener('click', handleNewDeck);
-        sortCollectionSelect.addEventListener('change', renderCollection); // Re-render on sort change
+        sortCollectionSelect.addEventListener('change', renderCollection); // Перерисовать при смене сортировки // Re-render on sort change
 
-        // Initial Render
+        // Начальный рендер // Initial Render
         populateSavedDecksDropdown();
         renderCollection();
-        renderDeck(); // Render empty deck initially
+        renderDeck(); // Сначала отрисовать пустую колоду // Render empty deck initially
     })
     .catch(error => {
-        console.error("Failed to initialize Deck Builder:", error);
-        // Display error to user?
+        console.error("Не удалось инициализировать конструктор колод:", error); // Failed to initialize Deck Builder:
+        // Можно вывести ошибку пользователю // Display error to user?
     });
 
 
@@ -78,16 +78,16 @@ function renderCollection() {
         switch (sortBy) {
             case 'cost':
                 if (cardA.cost !== cardB.cost) return cardA.cost - cardB.cost;
-                return cardA.name.localeCompare(cardB.name); // Secondary sort by name
+                return cardA.name.localeCompare(cardB.name); // Вторичная сортировка по имени // Secondary sort by name
             case 'rarity':
                  const rarityIndexA = rarityOrder.indexOf(cardA.rarity);
                  const rarityIndexB = rarityOrder.indexOf(cardB.rarity);
                  if (rarityIndexA !== rarityIndexB) return rarityIndexA - rarityIndexB;
-                 return cardA.name.localeCompare(cardB.name); // Secondary sort by name
+                 return cardA.name.localeCompare(cardB.name); // Вторичная сортировка по имени // Secondary sort by name
             case 'faction':
                  const factionCompare = cardA.faction.localeCompare(cardB.faction);
                  if (factionCompare !== 0) return factionCompare;
-                 return cardA.name.localeCompare(cardB.name); // Secondary sort by name
+                 return cardA.name.localeCompare(cardB.name); // Вторичная сортировка по имени // Secondary sort by name
             case 'name':
             default:
                 return cardA.name.localeCompare(cardB.name);
@@ -204,18 +204,18 @@ function addCardToDeck(cardId) {
 
     // Check limits
     if (currentDeckIds.length >= MAX_DECK_SIZE) {
-        console.log("Cannot add card: Deck is full.");
-        alert("Deck is full (Max " + MAX_DECK_SIZE + " cards).");
+        console.log("Нельзя добавить карту: колода заполнена."); // Cannot add card: Deck is full.
+        alert("Колода заполнена (максимум " + MAX_DECK_SIZE + " карт)."); // Deck is full (Max ... cards).
         return;
     }
     if (countInDeck >= MAX_CARD_COPIES) {
-        console.log(`Cannot add card: Max ${MAX_CARD_COPIES} copies of ${cardDatabase[cardId]?.name} allowed.`);
-        alert(`Maximum ${MAX_CARD_COPIES} copies of "${cardDatabase[cardId]?.name}" allowed in a deck.`);
+        console.log(`Нельзя добавить карту: максимум ${MAX_CARD_COPIES} копий ${cardDatabase[cardId]?.name} разрешено.`); // Cannot add card: Max ... copies allowed.
+        alert(`Максимум ${MAX_CARD_COPIES} копий "${cardDatabase[cardId]?.name}" разрешено в колоде.`); // Maximum ... copies of ... allowed in a deck.
         return;
     }
      if (countInDeck >= countInCollection) {
-         console.log(`Cannot add card: Not enough copies of ${cardDatabase[cardId]?.name} in collection.`);
-         alert(`You don't own enough copies of "${cardDatabase[cardId]?.name}" to add another.`);
+         console.log(`Нельзя добавить карту: недостаточно копий ${cardDatabase[cardId]?.name} в коллекции.`); // Cannot add card: Not enough copies in collection.
+         alert(`У вас недостаточно копий "${cardDatabase[cardId]?.name}" для добавления.`); // You don't own enough copies ... to add another.
          return;
      }
 
@@ -249,68 +249,68 @@ function populateSavedDecksDropdown() {
 function handleSaveDeck() {
     const name = deckNameInput.value.trim();
     if (!name) {
-        alert("Please enter a name for the deck.");
+        alert("Пожалуйста, введите название колоды."); // Please enter a name for the deck.
         return;
     }
     if (currentDeckIds.length < MIN_DECK_SIZE) {
-         alert(`Deck is too small (Min ${MIN_DECK_SIZE} cards).`);
+         alert(`Колода слишком мала (минимум ${MIN_DECK_SIZE} карт).`); // Deck is too small (Min ... cards).
          return;
     }
      if (currentDeckIds.length > MAX_DECK_SIZE) {
-         alert(`Deck is too large (Max ${MAX_DECK_SIZE} cards).`);
+         alert(`Колода слишком велика (максимум ${MAX_DECK_SIZE} карт).`); // Deck is too large (Max ... cards).
          return;
      }
 
 
     const success = saveTemporaryDeck(name, currentDeckIds); // From shared.js
     if (success) {
-        alert(`Deck "${name}" saved successfully!`);
-        populateSavedDecksDropdown(); // Update dropdown
-        // Select the saved deck in the dropdown
+        alert(`Колода "${name}" успешно сохранена!`); // Deck ... saved successfully!
+        populateSavedDecksDropdown(); // Обновить выпадающий список // Update dropdown
+        // Выбрать сохранённую колоду в выпадающем списке // Select the saved deck in the dropdown
         savedDecksListEl.value = name;
     } else {
-        alert(`Failed to save deck "${name}".`);
+        alert(`Не удалось сохранить колоду "${name}".`); // Failed to save deck ...
     }
 }
 
 function handleLoadDeck() {
     const selectedDeckName = savedDecksListEl.value;
     if (!selectedDeckName) {
-        alert("Please select a deck to load.");
+        alert("Пожалуйста, выберите колоду для загрузки."); // Please select a deck to load.
         return;
     }
     const decks = getTemporarySavedDecks();
     const deckToLoad = decks.find(deck => deck.name === selectedDeckName);
 
     if (deckToLoad) {
-        currentDeckIds = [...deckToLoad.cards]; // Load the card IDs (create copy)
+        currentDeckIds = [...deckToLoad.cards]; // Загрузить ID карт (создать копию) // Load the card IDs (create copy)
         currentDeckName = deckToLoad.name;
-        deckNameInput.value = currentDeckName; // Update name input
-        renderDeck(); // Re-render the deck display
-        alert(`Deck "${selectedDeckName}" loaded.`);
+        deckNameInput.value = currentDeckName; // Обновить поле имени // Update name input
+        renderDeck(); // Перерисовать отображение колоды // Re-render the deck display
+        alert(`Колода "${selectedDeckName}" загружена.`); // Deck ... loaded.
     } else {
-        alert(`Error: Could not find deck "${selectedDeckName}" to load.`);
+        alert(`Ошибка: не удалось найти колоду "${selectedDeckName}" для загрузки.`); // Error: Could not find deck ... to load.
     }
 }
 
 function handleDeleteDeck() {
      const selectedDeckName = savedDecksListEl.value;
     if (!selectedDeckName) {
-        alert("Please select a deck to delete.");
+        alert("Пожалуйста, выберите колоду для удаления."); // Please select a deck to delete.
         return;
     }
 
-    if (confirm(`Are you sure you want to delete the deck "${selectedDeckName}"?`)) {
+    if (confirm(`Вы уверены, что хотите удалить колоду "${selectedDeckName}"?`)) { // Are you sure you want to delete the deck ...?
         const success = deleteTemporaryDeck(selectedDeckName); // From shared.js
         if (success) {
-            alert(`Deck "${selectedDeckName}" deleted.`);
-            populateSavedDecksDropdown(); // Update dropdown
-            // If the deleted deck was the currently loaded one, clear the builder
+            alert(`Колода "${selectedDeckName}" удалена.`); // Deck ... deleted.
+            populateSavedDecksDropdown(); // Обновить выпадающий список // Update dropdown
+            // Если удалённая колода была текущей, очистить конструктор // If the deleted deck was the currently loaded one, clear the builder
             if (currentDeckName === selectedDeckName) {
                 handleNewDeck();
             }
         } else {
-            alert(`Failed to delete deck "${selectedDeckName}".`);
+            alert(`Не удалось удалить колоду "${selectedDeckName}".`); // Failed to delete deck ...
         }
     }
 }
@@ -319,9 +319,9 @@ function handleNewDeck() {
     currentDeckIds = [];
     currentDeckName = "";
     deckNameInput.value = "";
-    savedDecksListEl.value = ""; // Deselect in dropdown
+    savedDecksListEl.value = ""; // Снять выделение в выпадающем списке // Deselect in dropdown
     renderDeck();
-    console.log("Cleared current deck.");
+    console.log("Текущая колода очищена."); // Cleared current deck.
 }
 
 // --- Sorting ---
@@ -329,4 +329,4 @@ function handleSortCollection() {
     renderCollection(); // Just re-render the collection with the new sort order
 }
 
-console.log("deckbuilder.js loaded");
+console.log("deckbuilder.js загружен"); // deckbuilder.js loaded

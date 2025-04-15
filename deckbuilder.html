@@ -95,59 +95,59 @@
     </style>
 </head>
 <body>
-    <h1>Deck Builder</h1>
-    <p><a href="index.html">Back to Game</a></p>
+    <h1>Конструктор колод</h1>
+    <p><a href="index.html">Назад к игре</a></p>
 
     <div class="deck-builder-container">
-        <!-- Collection Column -->
+        <!-- Коллекция -->
         <div class="collection-column">
-            <h2>Your Collection</h2>
+            <h2>Ваша коллекция</h2>
             <div class="collection-filters">
-                <!-- Add filter controls here later (e.g., by faction, type, cost) -->
-                <label for="sort-collection">Sort by:</label>
+                <!-- Фильтры (добавить позже) -->
+                <label for="sort-collection">Сортировать по:</label>
                 <select id="sort-collection">
-                    <option value="name">Name</option>
-                    <option value="cost">Cost</option>
-                    <option value="rarity">Rarity</option>
-                    <option value="faction">Faction</option>
+                    <option value="name">Имя</option>
+                    <option value="cost">Стоимость</option>
+                    <option value="rarity">Редкость</option>
+                    <option value="faction">Фракция</option>
                 </select>
             </div>
             <div id="collection-list" class="card-list">
-                <!-- Player's owned cards will be displayed here -->
-                Loading collection...
+                <!-- Здесь будут отображаться ваши карты -->
+                Загрузка коллекции...
             </div>
         </div>
 
-        <!-- Deck Column -->
+        <!-- Колода -->
         <div class="deck-column">
-            <h2>Current Deck (<span id="deck-card-count">0</span>/<span id="deck-max-count">40</span>)</h2>
+            <h2>Текущая колода (<span id="deck-card-count">0</span>/<span id="deck-max-count">40</span>)</h2>
              <div class="deck-controls">
-                <label for="deck-name">Deck Name:</label>
-                <input type="text" id="deck-name" placeholder="Enter deck name">
-                <button id="save-deck-button">Save Deck</button>
+                <label for="deck-name">Название колоды:</label>
+                <input type="text" id="deck-name" placeholder="Введите название колоды">
+                <button id="save-deck-button">Сохранить колоду</button>
                 <br>
-                <label for="saved-decks-list">Load Deck:</label>
+                <label for="saved-decks-list">Загрузить колоду:</label>
                 <select id="saved-decks-list">
-                    <option value="">-- Select a Deck --</option>
-                    <!-- Saved deck names will be populated here -->
+                    <option value="">-- Выберите колоду --</option>
+                    <!-- Сохранённые колоды будут здесь -->
                 </select>
-                <button id="load-deck-button">Load Selected</button>
-                <button id="delete-deck-button">Delete Selected</button>
-                <button id="new-deck-button">New Deck</button>
+                <button id="load-deck-button">Загрузить выбранную</button>
+                <button id="delete-deck-button">Удалить выбранную</button>
+                <button id="new-deck-button">Новая колода</button>
             </div>
             <div id="current-deck-list" class="card-list">
-                <!-- Cards added to the current deck will be displayed here -->
+                <!-- Здесь будут отображаться карты текущей колоды -->
             </div>
             <div class="deck-stats">
-                <h3>Deck Statistics</h3>
+                <h3>Статистика колоды</h3>
                 <p id="deck-stats-details">
-                    <!-- Stats like card type counts, cost curve etc. can go here -->
+                    <!-- Здесь будет статистика по типам, стоимости и т.д. -->
                 </p>
             </div>
         </div>
     </div>
 
-    <!-- Link shared data first, then the Deck Builder JavaScript -->
+    <!-- Подключить shared.js, затем deckbuilder.js -->
     <script src="shared.js"></script>
     <script src="deckbuilder.js"></script>
 </body>

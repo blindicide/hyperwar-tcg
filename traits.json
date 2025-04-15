@@ -1,7 +1,7 @@
 {
   "testing": {
-    "name": "Testing",
-    "description": "A trait used for internal testing purposes."
+    "name": "Тестирование",
+    "description": "Черта, используемая для внутреннего тестирования."
   },
   "guard": {
     "name": "На страже",
@@ -28,31 +28,31 @@
     "description": "Если юнит уничтожает противника одной атакой, то не получает урона."
   },
   "deadly": {
-    "name": "Deadly",
-    "description": "Any unit dealt combat damage by this unit is instantly destroyed."
+    "name": "Смертоносный",
+    "description": "Любой юнит, получивший боевой урон от этого юнита, немедленно уничтожается."
   },
   "deploy": {
-    "name": "Deploy",
-    "description": "Triggers an effect when the unit enters the battlefield."
+    "name": "Развёртывание",
+    "description": "Активирует эффект, когда юнит выходит на поле боя."
   },
   "destroyed": {
-    "name": "Destroyed",
-    "description": "Triggers an effect when the unit is destroyed."
+    "name": "Уничтожен",
+    "description": "Активирует эффект, когда юнит уничтожается."
   },
   "suppression": {
-    "name": "Suppression",
-    "description": "Enemy units damaged by this unit cannot attack during their next turn."
+    "name": "Подавление",
+    "description": "Вражеские юниты, поврежденные этим юнитом, не могут атаковать во время своего следующего хода."
   },
   "infantry": {
-    "name": "Infantry",
-    "description": "A standard ground soldier unit."
+    "name": "Пехота",
+    "description": "Пехота или мотострелки - военнослужащие 'на земле'."
   },
   "vehicle": {
-    "name": "Vehicle",
-    "description": "An armored or transport ground vehicle."
+    "name": "Техника",
+    "description": "Бронированное или грузовое транспортное средство."
   },
   "aircraft": {
-    "name": "Aircraft",
-    "description": "A flying unit, potentially ignoring Guard or requiring specific counters."
+    "name": "Летающий",
+    "description": "Летающий юнит. Механики в разработке."
   }
 }

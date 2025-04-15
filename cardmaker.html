@@ -14,69 +14,69 @@
     </style>
 </head>
 <body>
-    <h1>Create a New Card</h1>
+    <h1>Создать новую карту</h1>
     <form class="cardmaker-form" id="cardForm">
         <label>
-            Name:
+            Имя:
             <input type="text" id="cardName" required>
         </label>
         <label>
-            Type:
+            Тип:
             <select id="cardType" required>
-                <option value="Unit">Unit</option>
-                <option value="Order">Order</option>
+                <option value="Unit">Юнит</option>
+                <option value="Order">Приказ</option>
             </select>
         </label>
         <label>
-            Cost:
+            Стоимость:
             <input type="number" id="cardCost" min="0" value="1" required>
         </label>
         <div id="unitFields">
             <label>
-                ATK:
+                АТК:
                 <input type="number" id="cardAtk" min="0" value="1">
             </label>
             <label>
-                HP:
+                ОЗ:
                 <input type="number" id="cardHp" min="1" value="1">
             </label>
             <label>
-                Max HP:
+                Макс. ОЗ:
                 <input type="number" id="cardMaxHp" min="1" value="1">
             </label>
         </div>
         <label>
-            Description:
+            Описание:
             <textarea id="cardDescription" rows="2"></textarea>
         </label>
         <label>
-            Faction:
+            Фракция:
             <select id="cardFaction" required></select>
         </label>
         <label>
-            Country:
+            Страна:
             <select id="cardCountry" required></select>
         </label>
         <label>
-            Traits:
+            Черты:
             <div class="traits-list" id="traitsList"></div>
         </label>
         <label>
-            Rarity:
+            Редкость:
             <select id="cardRarity" required>
-                <option value="Common">Common</option>
-                <option value="Rare">Rare</option>
-                <option value="Elite">Elite</option>
-                <option value="Super Rare">Super Rare</option>
-                <option value="Ultra Rare">Ultra Rare</option>
+                <option value="Common">Обычная</option>
+                <option value="Rare">Редкая</option>
+                <option value="Elite">Элита</option>
+                <option value="Super Rare">Супер редкая</option>
+                <option value="Ultra Rare">Ультра редкая</option>
             </select>
         </label>
-        <button type="submit">Generate Card JSON</button>
+        <button type="submit">Сгенерировать JSON карты</button>
     </form>
     <div class="output-area" id="outputArea" style="display:none;">
-        <h3>Card JSON</h3>
+        <h3>JSON карты</h3>
         <pre id="cardJson"></pre>
-        <button id="copyJson">Copy to Clipboard</button>
+        <button id="copyJson">Скопировать в буфер</button>
     </div>
     <script src="cardmaker.js"></script>
 </body>

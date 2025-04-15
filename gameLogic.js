@@ -1,14 +1,14 @@
-// --- Core Game Logic ---
+// --- Основная логика игры --- // --- Core Game Logic ---
 
-// Assumes access to global variables:
+// Предполагается доступ к глобальным переменным: // Assumes access to global variables:
 // - players, currentPlayerIndex, turnNumber, gameLog, uniqueCardIdCounter, selectedCard, actionState
-// - cardDatabase, cardEffectMap (for Orders)
-// Assumes access to global functions:
-// - From shared.js: getTemporaryCollection, getTemporarySavedDecks, log, shuffle, createCardInstance
-// - From ui.js: updateUI, renderLog
-// - DOM elements for setup/game area switching
+// - cardDatabase, cardEffectMap (для Приказов) // (for Orders)
+// Предполагается доступ к глобальным функциям: // Assumes access to global functions:
+// - Из shared.js: getTemporaryCollection, getTemporarySavedDecks, log, shuffle, createCardInstance // From shared.js
+// - Из ui.js: updateUI, renderLog // From ui.js
+// - DOM-элементы для переключения между настройкой/игровой зоной // DOM elements for setup/game area switching
 
-// --- Core Game Logic Functions ---
+// --- Основные функции логики игры --- // --- Core Game Logic Functions ---
 
 // Modified startGame to accept deck selections
 function startGame(player1DeckIds, player2DeckIds) {
@@ -486,6 +486,89 @@ function handleDeployEffect(card, player) {
                  log(`${card.name} deployed, but no valid target found to improve.`);
             }
             break;
+        case 'damage_random_enemy': {
+            const damage = card.deployValue || 1;
+            const opponent = getOpponentPlayer();
+            const enemyUnits = opponent.battlefield;
+            if (enemyUnits.length > 0) {
+                const randomIndex = Math.floor(Math.random() * enemyUnits.length);
+                const target = enemyUnits[randomIndex];
+                target.hp -= damage;
+                log(`${card.name} deployed, dealing ${damage} damage to random enemy unit ${target.name}.`);
+                updateUI();
+                cleanupBattlefield();
+            } else {
+                log(`${card.name} deployed, but no enemy units to damage.`);
+            }
+            break;
+        }
+        case 'draw_card': {
+            const count = card.deployValue || 1;
+            for (let i = 0; i < count; i++) {
+                drawCard(player);
+            }
+            log(`${card.name} deployed, drawing ${count} card(s).`);
+            updateUI();
+            break;
+        }
+        case 'damage_enemy': {
+            const damage = card.deployValue || 1;
+            const opponent = getOpponentPlayer();
+            const enemyUnits = opponent.battlefield;
+            if (enemyUnits.length > 0) {
+                // For now, pick a random enemy unit (could be improved to allow targeting)
+                const randomIndex = Math.floor(Math.random() * enemyUnits.length);
+                const target = enemyUnits[randomIndex];
+                target.hp -= damage;
+                log(`${card.name} deployed, dealing ${damage} damage to enemy unit ${target.name}.`);
+                updateUI();
+                cleanupBattlefield();
+            } else {
+                log(`${card.name} deployed, but no enemy units to damage.`);
+            }
+            break;
+        }
+        case 'destroy_enemy_support': {
+            const opponent = getOpponentPlayer();
+            const supportUnits = opponent.battlefield.filter(unit => unit.traits && unit.traits.includes('support'));
+            if (supportUnits.length > 0) {
+                const randomIndex = Math.floor(Math.random() * supportUnits.length);
+                const target = supportUnits[randomIndex];
+                target.hp = 0;
+                log(`${card.name} deployed, destroying enemy support unit ${target.name}.`);
+                updateUI();
+                cleanupBattlefield();
+            } else {
+                log(`${card.name} deployed, but no enemy support units to destroy.`);
+            }
+            break;
+        }
+        case 'peek_deck': {
+            const count = card.deployValue || 1;
+            const peeked = player.deck.slice(-count).map(id => cardDatabase[id]?.name || id);
+            if (peeked.length > 0) {
+                log(`${card.name} deployed, top ${count} card(s) of your deck: ${peeked.join(', ')}.`);
+            } else {
+                log(`${card.name} deployed, but your deck is empty.`);
+            }
+            break;
+        }
+        case 'repair_vehicle': {
+            const healAmount = card.deployValue || 1;
+            let vehicles = player.battlefield.filter(unit => unit.traits && unit.traits.includes('vehicle') && unit.hp < unit.maxHp);
+            if (vehicles.length > 0) {
+                // For now, pick a random damaged vehicle
+                const randomIndex = Math.floor(Math.random() * vehicles.length);
+                const target = vehicles[randomIndex];
+                const healed = Math.min(healAmount, target.maxHp - target.hp);
+                target.hp += healed;
+                log(`${card.name} deployed, repairing ${target.name} for ${healed} HP.`);
+                updateUI();
+            } else {
+                log(`${card.name} deployed, but no damaged friendly vehicles to repair.`);
+            }
+            break;
+        }
         // Add more deploy effect cases here
         default:
             log(`Unknown deploy effect: ${card.deployEffect}`);
